@@ -5,8 +5,12 @@
 package first.robot;
 
 import org.wpilib.hardware.bus.CANPort;
+import org.wpilib.math.geometry.Pose2d;
 import org.wpilib.math.geometry.Translation2d;
 import org.wpilib.math.kinematics.SwerveDriveKinematics;
+import org.wpilib.math.linalg.VecBuilder;
+import org.wpilib.math.linalg.Vector;
+import org.wpilib.math.numbers.N3;
 import org.wpilib.math.util.Units;
 
 import com.revrobotics.spark.FeedbackSensor;
@@ -71,8 +75,8 @@ public final class Constants {
         // Angular offsets of the modules relative to the chassis in radians
         public static final double FRONT_LEFT_CHASSIS_ANGULAR_OFFSET = -Math.PI / 2;
         public static final double FRONT_RIGHT_CHASSIS_ANGULAR_OFFSET = 0;
-        public static final double BACK_LEFT_CHASSIS_ANGULAR_OFFSET = Math.PI;
-        public static final double BACK_RIGHT_CHASSIS_ANGULAR_OFFSET = Math.PI / 2;
+        public static final double REAR_LEFT_CHASSIS_ANGULAR_OFFSET = Math.PI;
+        public static final double REAR_RIGHT_CHASSIS_ANGULAR_OFFSET = Math.PI / 2;
 
         // SPARK MAX CAN IDs
         public static final int FRONT_LEFT_DRIVING_CAN_ID = 3;
@@ -85,6 +89,13 @@ public final class Constants {
         public static final int FRONT_RIGHT_TURNING_CAN_ID = 6;
         public static final int REAR_RIGHT_TURNING_CAN_ID = 8;
 
+               // SwerveDrivePoseEstimator configurations
+        public static final Pose2d INITIAL_POSE_METERS = Pose2d.ZERO;
+        public static final Vector<N3> STATE_STD_DEVS = VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5));
+        public static final Vector<N3> VISION_MEASUREMENT_STD_DEVS = VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30));
+
+
+        public static final boolean GYRO_REVERSED = false;
         public static final double DRIVE_DEAD_BAND = 0.05;
     }
 
