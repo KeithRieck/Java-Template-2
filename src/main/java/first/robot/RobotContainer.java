@@ -5,10 +5,15 @@
 package first.robot;
 
 import org.wpilib.command2.Command;
+import org.wpilib.command2.InstantCommand;
 import org.wpilib.command2.button.CommandGamepad;
 import org.wpilib.command2.button.CommandJoystick;
 import org.wpilib.command2.button.CommandXboxController;
 import org.wpilib.command2.button.Trigger;
+import org.wpilib.math.geometry.Pose2d;
+import org.wpilib.math.geometry.Rotation2d;
+import org.wpilib.tunable.Selectable;
+import org.wpilib.tunable.Tunables;
 
 import first.robot.Constants.OperatorConstants;
 import first.robot.commands.DriveCommand;
@@ -30,13 +35,32 @@ public class RobotContainer {
     private final CommandXboxController xboxController = new CommandXboxController(
             OperatorConstants.XBOX_CONTROLLER_PORT);
 
+    // Dashboard chooser for autonomous command
+    private final Selectable<Command> autoChooser;
+
+    private static RobotContainer instance;
+
+    public static synchronized RobotContainer getInstance() {
+        if (instance == null) {
+            instance = new RobotContainer();
+        }
+        return instance;
+    }
+
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
-    public RobotContainer() {
+    private RobotContainer() {
         driveSubsystem = new DriveSubsystem();
 
+        autoChooser = configureAutonomous();
+
         configureBindings();
+
+        configureDashboard();
+        if (Robot.isSimulation()) {
+            configureSimulation();
+        }
     }
 
     /**
@@ -53,6 +77,51 @@ public class RobotContainer {
                 rightJoystick::getX,
                 leftJoystick::getX,
                 driveSubsystem));
+    }
+
+    private void configureSimulation() {
+        // Start the robot in an orientation that will make it easier to drive in
+        // simulation.
+        driveSubsystem.resetOdometry(new Pose2d(2, 2, Rotation2d.fromDegrees(90)));
+
+        // Y button on xbox controller resets the gyro
+        xboxController.y().onTrue(
+                new InstantCommand(driveSubsystem::zeroHeading));
+
+        driveSubsystem.setDefaultCommand(new DriveCommand(
+                xboxController::getLeftY,
+                xboxController::getLeftX,
+                xboxController::getRightX,
+                driveSubsystem));
+    }
+
+    /**
+     * Use this method to set up all autonomous routines and add them to a
+     * dashboard chooser. For PathPlanner, use this method to register
+     * NamedCommands and EventTriggers.
+     *
+     * @return the autonomous chooser.
+     */
+    private Selectable<Command> configureAutonomous() {
+        // TODO: register NamedCommands here
+
+        Selectable<Command> chooser = new Selectable<>();
+
+        // TODO: Add pathplanner autos here.
+
+        // TODO: configure additional autonomous routines here
+        return chooser;
+    }
+
+    /**
+     * Use this method for additional configuration to the driver's dashboard.
+     * SmartDashboard data should be added from subsystems and commands, but
+     * this method defines the dashboard widgets.
+     */
+    private void configureDashboard() {
+        Tunables.publish("Auto Chooser", autoChooser);
+
+        // TODO: Add other Elastic dashboard widgets here.
     }
 
     /**
