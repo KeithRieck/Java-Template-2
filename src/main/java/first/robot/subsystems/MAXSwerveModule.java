@@ -47,7 +47,7 @@ public class MAXSwerveModule {
      * MAXSwerve Module built with NEOs, SPARKS MAX, and a Through Bore
      * Encoder.
      */
-    public MAXSwerveModule(int drivingCANId, int turningCANId, double chassischassisAngularOffset) {
+    public MAXSwerveModule(int drivingCANId, int turningCANId, double chassisAngularOffset) {
         drivingSpark = new SparkMax(DriveConstants.DRIVE_CAN_BUS.value, drivingCANId, MotorType.kBrushless);
         turningSpark = new SparkMax(DriveConstants.DRIVE_CAN_BUS.value, turningCANId, MotorType.kBrushless);
 
@@ -65,7 +65,7 @@ public class MAXSwerveModule {
         turningSpark.configure(MAXSwerveModuleConfig.TURNING_CONFIG, ResetMode.kResetSafeParameters,
                 PersistMode.kPersistParameters);
 
-        this.chassisAngularOffset = chassischassisAngularOffset;
+        this.chassisAngularOffset = chassisAngularOffset;
         desiredState.angle = new Rotation2d(turningEncoder.getPosition().get());
         drivingEncoder.setPosition(0);
 
