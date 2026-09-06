@@ -18,6 +18,7 @@ import org.wpilib.tunable.Tunables;
 import first.robot.Constants.OperatorConstants;
 import first.robot.commands.DriveCommand;
 import first.robot.subsystems.DriveSubsystem;
+import first.robot.subsystems.VisionSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -29,6 +30,7 @@ import first.robot.subsystems.DriveSubsystem;
 public class RobotContainer {
 
     private final DriveSubsystem driveSubsystem;
+    private final VisionSubsystem visionSubsystem;
 
     private final CommandJoystick leftJoystick = new CommandJoystick(OperatorConstants.LEFT_JOYSTICK_PORT);
     private final CommandJoystick rightJoystick = new CommandJoystick(OperatorConstants.RIGHT_JOYSTICK_PORT);
@@ -52,6 +54,7 @@ public class RobotContainer {
      */
     private RobotContainer() {
         driveSubsystem = new DriveSubsystem();
+        visionSubsystem = new VisionSubsystem(driveSubsystem);
 
         autoChooser = configureAutonomous();
 

@@ -62,13 +62,14 @@ public final class Constants {
         // 45 teeth on the wheel's bevel gear, 22 teeth on the first-stage spur gear, 15
         // teeth on the bevel pinion
         public static final double DRIVING_MOTOR_REDUCTION = (45.0 * 22) / (DRIVING_MOTOR_PINION_TEETH * 15);
-        public static final double DRIVE_WHEEL_FREE_SPEED_RPS = (DRIVING_MOTOR_FREE_SPEED_RPS * WHEEL_CIRCUMFERENCE_METERS)
+        public static final double DRIVE_WHEEL_FREE_SPEED_RPS = (DRIVING_MOTOR_FREE_SPEED_RPS
+                * WHEEL_CIRCUMFERENCE_METERS)
                 / DRIVING_MOTOR_REDUCTION;
 
         // Distance between front and back wheels on robot
         public static final SwerveDriveKinematics DRIVE_KINEMATICS = new SwerveDriveKinematics(
                 new Translation2d(WHEEL_BASE / 2, TRACK_WIDTH / 2),
-                new Translation2d(WHEEL_BASE  / 2, -TRACK_WIDTH / 2),
+                new Translation2d(WHEEL_BASE / 2, -TRACK_WIDTH / 2),
                 new Translation2d(-WHEEL_BASE / 2, TRACK_WIDTH / 2),
                 new Translation2d(-WHEEL_BASE / 2, -TRACK_WIDTH / 2));
 
@@ -89,17 +90,17 @@ public final class Constants {
         public static final int FRONT_RIGHT_TURNING_CAN_ID = 6;
         public static final int REAR_RIGHT_TURNING_CAN_ID = 8;
 
-               // SwerveDrivePoseEstimator configurations
+        // SwerveDrivePoseEstimator configurations
         public static final Pose2d INITIAL_POSE_METERS = Pose2d.ZERO;
         public static final Vector<N3> STATE_STD_DEVS = VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5));
-        public static final Vector<N3> VISION_MEASUREMENT_STD_DEVS = VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30));
-
+        public static final Vector<N3> VISION_MEASUREMENT_STD_DEVS = VecBuilder.fill(0.5, 0.5,
+                Units.degreesToRadians(30));
 
         public static final boolean GYRO_REVERSED = false;
         public static final double DRIVE_DEAD_BAND = 0.05;
     }
 
-     public static final class MAXSwerveModuleConfig {
+    public static final class MAXSwerveModuleConfig {
 
         public static final SparkMaxConfig DRIVING_CONFIG = new SparkMaxConfig();
         public static final SparkMaxConfig TURNING_CONFIG = new SparkMaxConfig();
@@ -148,4 +149,10 @@ public final class Constants {
                     .positionWrappingInputRange(0, turningFactor);
         }
     }
+
+    public static class VisionConstants {
+        public static final double MAX_AMBIGUITY = 0.10;
+        public static final Object FIELD_LAYOUT = null; // TODO: Change this to a specific field layout
+    }
+
 }
