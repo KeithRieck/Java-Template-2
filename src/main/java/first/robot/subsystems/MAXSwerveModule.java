@@ -143,8 +143,10 @@ public class MAXSwerveModule {
 
     // The following function must be called from simulationPeriodic()
     public void updateSimEncoders() {
-        simDrivingEncoder.setVelocity(drivingClosedLoopController.getSetpoint().get());
-        simDrivingEncoder.iterate(drivingClosedLoopController.getSetpoint().get(), 0.02);
-        simTurningEncoder.setPosition(turningClosedLoopController.getSetpoint().get());
+        if (drivingClosedLoopController != null && turningClosedLoopController != null) {
+            simDrivingEncoder.setVelocity(drivingClosedLoopController.getSetpoint().get(0.0));
+            simDrivingEncoder.iterate(drivingClosedLoopController.getSetpoint().get(0.0), 0.02);
+            simTurningEncoder.setPosition(turningClosedLoopController.getSetpoint(0.0).get());
+        }
     }
 }

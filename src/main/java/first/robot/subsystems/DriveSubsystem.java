@@ -4,8 +4,6 @@
 
 package first.robot.subsystems;
 
-import static java.lang.Math.toDegrees;
-
 import java.util.Optional;
 
 import org.wpilib.command2.SubsystemBase;
@@ -22,6 +20,7 @@ import org.wpilib.math.kinematics.ChassisVelocities;
 import org.wpilib.math.kinematics.SwerveDriveKinematics;
 import org.wpilib.math.kinematics.SwerveModulePosition;
 import org.wpilib.math.kinematics.SwerveModuleVelocity;
+import org.wpilib.math.util.Units;
 import org.wpilib.networktables.NetworkTableEntry;
 import org.wpilib.networktables.NetworkTableInstance;
 import org.wpilib.networktables.StructPublisher;
@@ -56,7 +55,7 @@ public class DriveSubsystem extends SubsystemBase {
             DriveConstants.REAR_RIGHT_CHASSIS_ANGULAR_OFFSET);
 
     // The gyro sensor
-    private final OnboardIMU imu = new OnboardIMU(OnboardIMU.MountOrientation.FLAT);
+    private final OnboardIMU gyro = new OnboardIMU(OnboardIMU.MountOrientation.FLAT);
 
     // Odometry class for tracking robot pose
     private final SwerveDrivePoseEstimator odometry = new SwerveDrivePoseEstimator(
@@ -103,7 +102,7 @@ public class DriveSubsystem extends SubsystemBase {
     private double simulatedGyroRate;
 
     public DriveSubsystem() {
-        imu.resetYaw();
+        gyro.resetYaw();
 
         Tunables.publish("Odometry", odometryDisplay);
         odometryLogger = NetworkTableInstance.getDefault().getStructTopic("Odometry", Pose2d.struct).publish();
@@ -234,7 +233,7 @@ public class DriveSubsystem extends SubsystemBase {
      * Zeroes the heading of the robot.
      */
     public void zeroHeading() {
-        imu.resetYaw();
+        gyro.resetYaw();
         if (Robot.isSimulation()) {
             simulatedGyroAngle = Rotation2d.fromDegrees(0);
             simulatedGyroRate = 0;
@@ -249,7 +248,7 @@ public class DriveSubsystem extends SubsystemBase {
      */
     public double getHeading() {
         if (RobotBase.isReal()) {
-            return toDegrees(imu.getAngleZ());
+            return Units.radiansToDegrees(gyro.getAngleZ());
         } else {
             return simulatedGyroAngle.getDegrees();
         }
@@ -261,8 +260,7 @@ public class DriveSubsystem extends SubsystemBase {
      * @return The turn rate of the robot, in degrees per second
      */
     public double getTurnRate() {
-        double turnRateRadiansPerSecond = imu.getGyroRateZ();
-        return toDegrees(turnRateRadiansPerSecond) * (DriveConstants.GYRO_REVERSED ? -1.0 : 1.0);
+        return Units.radiansToDegrees(gyro.getGyroRateZ()) * (DriveConstants.GYRO_REVERSED ? -1.0 : 1.0);
     }
 
     /**
