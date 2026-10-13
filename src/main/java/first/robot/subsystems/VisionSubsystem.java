@@ -32,9 +32,9 @@ public class VisionSubsystem extends SubsystemBase {
     public final NetworkTableEntry apriltagsVisibleDisplay = NetworkTableInstance.getDefault()
             .getEntry("VisionSubsystem/AprilTagsVisible");
     public final NetworkTableEntry periodicTimeDisplay = NetworkTableInstance.getDefault()
-            .getEntry("VisionSubsystem/ProcessingTime");
-    public final StringPublisher apriltagLogger = NetworkTableInstance.getDefault()
-            .getStringTopic("SmartDashboard/VisionSubsystem/AprilTagsCamera").publish();
+            .getEntry("VisionSubsystem/periodicTime");
+    public final StringPublisher visionLogger = NetworkTableInstance.getDefault()
+            .getStringTopic("SmartDashboard/VisionSubsystem/visionLog").publish();
     public final List<VisionCamera> cameraList = new ArrayList<>();
 
     public VisionSubsystem(DriveSubsystem driveSubsystem) {
@@ -65,7 +65,7 @@ public class VisionSubsystem extends SubsystemBase {
                     driveSubsystem.addVisionMeasurement(
                             estimatedRobotPose.pose2d,
                             estimatedRobotPose.timestampSeconds);
-                    apriltagLogger.set(visionCamera.toString());
+                    visionLogger.set(visionCamera + " : " + estimatedRobotPose);
                 }
                 visionCamera.setPrevTimestamp(estimatedRobotPose.timestampSeconds);
             }

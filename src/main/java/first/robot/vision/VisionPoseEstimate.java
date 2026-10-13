@@ -18,4 +18,9 @@ public class VisionPoseEstimate {
     public VisionPoseEstimate(EstimatedRobotPose estimatedRobotPose) {
         this(estimatedRobotPose.estimatedPose.toPose2d(), estimatedRobotPose.timestampSeconds);
     }
+
+    @Override
+    public String toString() {
+        return String.format("VisionPoseEstimate(%s, %.3f)", this.pose2d, this.timestampSeconds);
+    }
 }
